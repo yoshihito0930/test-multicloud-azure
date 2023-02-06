@@ -27,17 +27,23 @@ After deploying the TiDB cluster, you can use Terraform to make changes to the r
 After deploying the TiDB cluster with Terraform, you can use the `terraform output` command to retrieve important information about the deployment. The output includes the bastion IP (public IP) and the `tidb_bastion_keypair_private_key`, which is the SSH key.
 
 ```
-terraform output -json | jq -r .tidb_bastion_keypair_private_key.value > ~/.ssh/tidb-test-bastion
-chmod 600 ~/.ssh/tidb-test-bastion
+terraform output -json | jq -r .tidb_bastion_keypair_private_key.value > ~/.ssh/tidb-test-azure-bastion
+chmod 600 ~/.ssh/tidb-test-azure-bastion
+
+terraform output -json | jq -r .tidb_database_keypair_private_key.value > ~/.ssh/tidb-test-azure-db
+chmod 600 ~/.ssh/tidb-test-azure-db
 ```
 
-To access the bastion host, use the following command, replacing `$bastion_ip` with the actual IP:
+To access the bastion host, use the following command, replacing `$bastion_public_ip` with the actual IP:
 
 ```
-ssh -i $keyfile ec2-user@$bastion_ip
+eval `ssh-agent`
+ssh-add ~/.ssh/tidb-test-azure-bastion
+ssh-add ~/.ssh/tidb-test-azure-db
+ssh -A azureuser@$bastion_public_ip
 
 curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-source /home/ec2-user/.bash_profile 
+source /home/azureuser/.bash_profile 
 tiup --version
 
 tiup cluster check tiup-topology.yaml

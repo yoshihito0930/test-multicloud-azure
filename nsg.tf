@@ -69,7 +69,7 @@ module "network_security_group_database" {
 
   custom_rules = [
     {
-      name                    = "tidb"
+      name                    = "${var.name_prefix}-database-allow-inbound-4000"
       priority                = 200
       direction               = "Inbound"
       access                  = "Allow"
@@ -80,8 +80,8 @@ module "network_security_group_database" {
       description             = "description-tidb"
     },
     {
-      name                    = "tidb"
-      priority                = 200
+      name                    = "${var.name_prefix}-database-allow-tiup"
+      priority                = 201
       direction               = "Inbound"
       access                  = "Allow"
       protocol                = "Tcp"
