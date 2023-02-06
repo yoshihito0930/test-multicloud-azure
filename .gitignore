@@ -1,0 +1,9 @@
+# ignore tf-*/.terraform directories
+
+.terraform/*
+.terraform.*
+*.tfvars
+*.tfstate
+*.tfstate.backup
+tiup-topology.yaml
+.DS_Store
