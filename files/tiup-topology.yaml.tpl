@@ -1,6 +1,6 @@
 global:
-  user: "ec2-user"
-  group: "ec2-user"
+  user:  "azureuser"
+  group: "azureuser"
   ssh_port: 22
   deploy_dir: "/tidb-deploy"
   data_dir: "/data"
