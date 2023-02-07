@@ -99,15 +99,24 @@ module "vm_bastion" {
   ]
 
   # init ssh private key use database_ssh key
-  # fixme: custom_data is not working
-  custom_data = base64encode(<<EOF
-    #!/bin/bash
-    mkdir -p /home/azureuser/.ssh
-    chmod 700 /home/azureuser/.ssh
-    echo "${tls_private_key.database_ssh.private_key_openssh}" > /home/azureuser/.ssh/id_rsa
-    chmod 600 /home/azureuser/.ssh/id_rsa
-  EOF
-  )
+  # fixme : custom data is not working
+  custom_data = data.template_cloudinit_config.set_bastion_private_key.rendered
+}
+data "template_file" "set_private_key_script" {
+  template = file("files/set-private-key.yaml")
+  vars = {
+    private_key_openssh = tls_private_key.database_ssh.private_key_openssh
+  }
+	
+}
+data "template_cloudinit_config" "set_bastion_private_key" {
+  gzip          = false
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.set_private_key_script.rendered
+  }
 }
 
 resource "azurerm_network_interface_security_group_association" "bastion_as" {
@@ -164,6 +173,20 @@ resource "azurerm_network_interface_security_group_association" "tidb_as" {
   network_security_group_id = module.network_security_group_database.network_security_group_id
 }
 
+data "template_file" "mount_data_disk_script" {
+  template = file("files/mount-data-disk.yaml")
+}
+
+data "template_cloudinit_config" "mount_data_disk" {
+  gzip          = false
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.mount_data_disk_script.rendered
+  }
+}
+
 module "vm_pd" {
   source = "Azure/virtual-machine/azurerm"
   version = "0.1.0"
@@ -218,16 +241,8 @@ module "vm_pd" {
     }
   ]
   # mount data disk
-  # fixme: custom_data is not working
-  custom_data = base64encode(<<EOF
-    #!/bin/bash
-    mkfs -t ext4 /dev/sdc
-    mkdir -p /data
-    echo "/dev/sdc /data ext4 defaults,nofail,noatime,nodelalloc 0 2" >> /etc/fstab
-    mount -a
-    chown -R azureuser:azureuser /data
-  EOF
-  )
+  # fixme : custom data is not working
+  custom_data = data.template_cloudinit_config.mount_data_disk.rendered
 }
 
 resource "azurerm_network_interface_security_group_association" "pd_as" {
@@ -290,16 +305,8 @@ module "vm_tikv" {
     }
   ]
   # mount data disk
-  # fixme: custom_data is not working
-  custom_data = base64encode(<<EOF
-    #!/bin/bash
-    yes | mkfs -t ext4 /dev/sdc
-    mkdir -p /data
-    echo "/dev/sdc /data ext4 defaults,nofail,noatime,nodelalloc 0 2" >> /etc/fstab
-    mount -a
-    chown -R azureuser:azureuser /data
-  EOF
-  )
+  # fixme : custom data is not working
+  custom_data = data.template_cloudinit_config.mount_data_disk.rendered
 }
 
 resource "azurerm_network_interface_security_group_association" "tikv_as" {
@@ -363,16 +370,8 @@ module "vm_ticdc" {
     }
   ]
   # mount data disk
-  # fixme: custom_data is not working
-  custom_data = base64encode(<<EOF
-    #!/bin/bash
-    yes | mkfs -t ext4 /dev/sdc
-    mkdir -p /data
-    echo "/dev/sdc /data ext4 defaults,nofail,noatime,nodelalloc 0 2" >> /etc/fstab
-    mount -a
-    chown -R azureuser:azureuser /data
-  EOF
-  )
+  # fixme : custom data is not working
+  custom_data = data.template_cloudinit_config.mount_data_disk.rendered
 }
 
 resource "azurerm_network_interface_security_group_association" "ticdc_as" {
