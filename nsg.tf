@@ -76,7 +76,10 @@ module "network_security_group_database" {
       protocol                = "Tcp"
       source_port_range       = "*"
       destination_port_range  = "4000"
-      source_address_prefixes = [local.app_subnet.cidr, local.gateway_subnet.cidr, local.bastion_subnet.cidr]
+      source_address_prefixes = [
+        local.app_subnet.cidr,
+        local.bastion_subnet.cidr,
+      ],
       description             = "description-tidb"
     },
     {

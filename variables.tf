@@ -36,6 +36,7 @@ variable "azure_vpc_cidr" {
   192.168.192.0/19    (192.168.192.0 - 192.168.223.255)   :     private/first-half/all-to-database ※
   192.168.224.0/19    (192.168.224.0 - 192.168.255.255)   :     private/second-half/保留
   ...
+  192.168.254.0/25    (192.168.254.0 - 192.168.254.127)   :     private/second-half/gateway ※
   192.168.254.128/25  (192.168.254.128 - 192.168.254.255) :     private/second-half/gateway ※
 */
 
@@ -55,12 +56,6 @@ variable "database_subnet_cidr" {
   type        = string
   default     = "192.168.192.0/19"
   description = "azure private subnet for database"
-}
-
-variable "gateway_subnet_cidr" {
-  type        = string
-  default     = "192.168.254.128/25"
-  description = "azure private subnet for gateway"
 }
 
 ## tidb servers spec

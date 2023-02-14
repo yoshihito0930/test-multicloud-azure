@@ -29,8 +29,8 @@ module "vnet" {
   vnet_location       = local.resource_group.location
   address_space       = [var.azure_vpc_cidr]
   vnet_name           = "${var.name_prefix}-vnet"
-  subnet_names        = [local.bastion_subnet.name, local.app_subnet.name, local.database_subnet.name, local.gateway_subnet.name]
-  subnet_prefixes     = [local.bastion_subnet.cidr, local.app_subnet.cidr, local.database_subnet.cidr, local.gateway_subnet.cidr]
+  subnet_names        = [local.bastion_subnet.name, local.app_subnet.name, local.database_subnet.name]
+  subnet_prefixes     = [local.bastion_subnet.cidr, local.app_subnet.cidr, local.database_subnet.cidr]
 
   tags = var.tags
 }

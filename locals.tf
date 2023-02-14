@@ -12,9 +12,4 @@ locals {
     name = "${var.name_prefix}-database"
     cidr = var.database_subnet_cidr
   }
-  gateway_subnet = {
-    name = "${var.name_prefix}-gateway"
-    cidr = var.gateway_subnet_cidr
-  }
-
 }
