@@ -15,7 +15,7 @@ variable "location" {
 
 variable "resource_group_name" {
   type    = string
-  default = "test-tidb"
+  default = "tidb-test"
 }
 
 variable "azure_vpc_cidr" {
@@ -61,8 +61,8 @@ variable "database_subnet_cidr" {
 ## tidb servers spec
 
 variable "tidb_instance_type" {
- type    = string
- default = "Standard_F2" # production: Standard_F8s_v2
+  type    = string
+  default = "Standard_F2" # production: Standard_F8s_v2
 }
 
 variable "tikv_instance_type" {
