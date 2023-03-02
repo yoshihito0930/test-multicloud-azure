@@ -15,7 +15,7 @@ variable "location" {
 
 variable "resource_group_name" {
   type    = string
-  default = "tidb-test"
+  default = "test-tidb"
 }
 
 variable "azure_vpc_cidr" {
