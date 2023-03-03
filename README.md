@@ -27,10 +27,10 @@ After deploying the TiDB cluster, you can use Terraform to make changes to the r
 After deploying the TiDB cluster with Terraform, you can use the `terraform output` command to retrieve important information about the deployment. The output includes the bastion IP (public IP) and the `tidb_bastion_keypair_private_key`, which is the SSH key.
 
 ```
-terraform output -json | jq -r .tidb_bastion_keypair_private_key.value > ~/.ssh/tidb-test-azure-bastion
+terraform output -json | jq.exe -r .tidb_bastion_keypair_private_key.value > ~/.ssh/tidb-test-azure-bastion
 chmod 600 ~/.ssh/tidb-test-azure-bastion
 
-terraform output -json | jq -r .tidb_database_keypair_private_key.value > ~/.ssh/tidb-test-azure-db
+terraform output -json | jq.exe -r .tidb_database_keypair_private_key.value > ~/.ssh/tidb-test-azure-db
 chmod 600 ~/.ssh/tidb-test-azure-db
 ```
 

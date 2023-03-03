@@ -23,7 +23,7 @@ output "ticdc" {
 }
 
 output "bastion_ip" {
-  value = "${join("\n", data.azurerm_public_ip.bastion.*.ip_address)}"
+  value = "${join("\n", azurerm_public_ip.bastion.*.ip_address)}"
 }
 
 # tidb_bastion keypair private key

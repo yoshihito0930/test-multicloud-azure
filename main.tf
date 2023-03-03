@@ -42,10 +42,10 @@ resource "azurerm_public_ip" "bastion" {
   allocation_method   = "Static"
   sku                 = "Standard"
 }
-data "azurerm_public_ip" "bastion" {
-  name                = "${var.name_prefix}-bastion"
-  resource_group_name = local.resource_group.name
-}
+#data "azurerm_public_ip" "bastion" {
+#  name                = "${var.name_prefix}-bastion"
+#  resource_group_name = local.resource_group.name
+#}
 
 resource "tls_private_key" "bastion_ssh" {
   algorithm = "RSA"
@@ -510,7 +510,7 @@ resource "null_resource" "bastion-inventory" {
       type        = "ssh"
       user        = "azureuser"
       private_key = "${tls_private_key.bastion_ssh.private_key_openssh}"
-      host        = element(data.azurerm_public_ip.bastion.*.ip_address, 0)
+      host        = element(azurerm_public_ip.bastion.*.ip_address, 0)
     }
   }
 }
