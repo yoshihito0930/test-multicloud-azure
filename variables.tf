@@ -9,7 +9,7 @@ variable "name_prefix" {
 
 variable "location" {
   type     = string
-  default  = "eastus"
+  default  = "japaneast"
   nullable = false
 }
 
